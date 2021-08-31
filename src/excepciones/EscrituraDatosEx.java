@@ -7,7 +7,7 @@ package excepciones;
 
 /**
  *
- * @author Ruldin
+ * @author Antonio
  */
 public class EscrituraDatosEx extends AccesoDatosEx{
     public EscrituraDatosEx(String msg){

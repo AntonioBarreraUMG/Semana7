@@ -7,7 +7,7 @@ package dominio;
 
 /**
  *
- * @author jeant
+ * @author Antonio
  */
 public class MdEmpleado {
     private final String nombre;
@@ -28,9 +28,9 @@ public class MdEmpleado {
     
     @Override
     public String toString(){
-        return this.getNombre() + " | " + this.getEnero() + " | " 
-            + this.getFebrero() + " | " + this.getMarzo() + " | " 
-              + this.getTotal() + " | " + this.getPromedio();
+        return this.getNombre() + "|" + this.getEnero() + "|" 
+            + this.getFebrero() + "|" + this.getMarzo() + "|" 
+              + this.getTotal() + "|" + this.getPromedio();
     }
     
     /**

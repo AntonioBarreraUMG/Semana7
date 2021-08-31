@@ -5,14 +5,14 @@
  */
 package datos;
 
-import dominio.Pelicula;
+import dominio.MdEmpleado;
 import excepciones.*;
 import java.io.*;
 import java.util.*;
 
 /**
  *
- * @author Ruldin
+ * @author Antonio
  */
 public class AccesoDatosImpl implements AccesoDatos {
     /** @param nombreArchivo
@@ -28,8 +28,8 @@ public class AccesoDatosImpl implements AccesoDatos {
     * @exception LecturaDatosEx
     * @pdOid 94530568-a4cb-4297-96e0-3cac88bada7e */
     @Override
-    public List<Pelicula> listar(String nombreArchivo) throws LecturaDatosEx {
-        List<Pelicula> peliculas = new ArrayList();
+    public List<MdEmpleado> listar(String nombreArchivo) throws LecturaDatosEx {
+        List<MdEmpleado> empleados = new ArrayList();
         try {
             BufferedReader entrada = null;
             File archivo = new File(nombreArchivo);
@@ -37,8 +37,10 @@ public class AccesoDatosImpl implements AccesoDatos {
             String linea = null;
             linea = entrada.readLine();
             while (linea != null){
-                Pelicula pelicula = new Pelicula(linea);
-                peliculas.add(pelicula);
+                String[] empDatos = linea.split("|");
+                MdEmpleado empleado = new MdEmpleado(empDatos[0], Double.valueOf(empDatos[1]), 
+                                    Double.valueOf(empDatos[2]), Double.valueOf(empDatos[3]));
+                empleados.add(empleado);
                 linea = entrada.readLine();
             }
             entrada.close();
@@ -47,7 +49,7 @@ public class AccesoDatosImpl implements AccesoDatos {
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
         }
-        return peliculas;
+        return empleados;
     }
     
     /** @param pelicula
@@ -56,12 +58,12 @@ public class AccesoDatosImpl implements AccesoDatos {
     * @exception EscrituraDatosEx
     * @pdOid ac225a72-846e-4700-ab01-ac2ee29fefac */
     @Override
-    public void escribir(Pelicula pelicula, String nombreArchivo, boolean anexar) throws EscrituraDatosEx {
+    public void escribir(MdEmpleado empleado, String nombreArchivo, boolean anexar) throws EscrituraDatosEx {
         PrintWriter salida = null;
         try {
             File archivo = new File(nombreArchivo);
             salida = new PrintWriter(new FileWriter(archivo,anexar));
-            salida.println(pelicula.toString());
+            salida.println(empleado.toString());
             salida.close();
             System.out.println("Se ha escrito el registro en el archivo");
         } catch (IOException ex) {
@@ -75,18 +77,18 @@ public class AccesoDatosImpl implements AccesoDatos {
     * @param buscar
     * @pdOid 74d2bc4a-8157-4371-9100-92acfea2a4d1 */
     @Override
-    public String buscar(String nombreArchivo, String buscar) {
+    public String buscar(String nombreArchivo, Double buscar) {
         BufferedReader entrada = null;
         String resultado = null;
         try {
             File archivo = new File(nombreArchivo);
             entrada = new BufferedReader(new FileReader(archivo));
             String linea = null;
-            int i=0;
+            int i=1;
             linea = entrada.readLine();
             while (linea != null){
-                if(buscar != null && buscar.equalsIgnoreCase(linea)){
-                    resultado = " Pelicula: "+ linea + " encontrada en el indice " + i;
+                if(buscar != null){
+                    resultado = " Empleado: "+ linea + " encontrada en el indice " + i;
                     break;
                 }
                 linea = entrada.readLine();
