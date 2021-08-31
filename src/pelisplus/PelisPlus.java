@@ -40,7 +40,6 @@ public class PelisPlus {
                         //1. Creamos el objeto que administra el catalogo de personas
                         //La creacion del archivo es opcional, de todas maneras se creara 
                         //al escribir por primera vez en el archivo
-                        //Probando cambio de rama
                         catalogoPeli.iniciarArchivo(nombreArchivo);
                         break;
                     case 2:
