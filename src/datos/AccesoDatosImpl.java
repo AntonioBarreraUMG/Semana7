@@ -15,7 +15,8 @@ import java.util.*;
  * @author Antonio
  */
 public class AccesoDatosImpl implements AccesoDatos {
-    /** @param nombreArchivo
+    /** *  @param nombreArchivo
+     * @return boolean
     * @exception AccesoDatosEx
     * @pdOid 482213a6-85eb-4673-88f5-00c579ed64a0 */
     @Override
@@ -24,7 +25,8 @@ public class AccesoDatosImpl implements AccesoDatos {
         return archivo.exists();
     }
     
-    /** @param nombreArchivo
+    /** *  @param nombreArchivo
+     * @return MdEmpleado
     * @exception LecturaDatosEx
     * @pdOid 94530568-a4cb-4297-96e0-3cac88bada7e */
     @Override
@@ -37,7 +39,7 @@ public class AccesoDatosImpl implements AccesoDatos {
             String linea = null;
             linea = entrada.readLine();
             while (linea != null){
-                String[] empDatos = linea.split("|");
+                String[] empDatos = linea.split("\\|");
                 MdEmpleado empleado = new MdEmpleado(empDatos[0], Double.valueOf(empDatos[1]), 
                                     Double.valueOf(empDatos[2]), Double.valueOf(empDatos[3]));
                 empleados.add(empleado);
@@ -52,7 +54,7 @@ public class AccesoDatosImpl implements AccesoDatos {
         return empleados;
     }
     
-    /** @param pelicula
+    /** @param empleado
     * @param nombreArchivo
     * @param anexar
     * @exception EscrituraDatosEx
@@ -65,7 +67,6 @@ public class AccesoDatosImpl implements AccesoDatos {
             salida = new PrintWriter(new FileWriter(archivo,anexar));
             salida.println(empleado.toString());
             salida.close();
-            System.out.println("Se ha escrito el registro en el archivo");
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
         } finally {
@@ -73,11 +74,13 @@ public class AccesoDatosImpl implements AccesoDatos {
         }
     }
     
-    /** @param nombreArchivo
+    /** *  @param nombreArchivo
     * @param buscar
+     * @return 
+     * @throws excepciones.LecturaDatosEx
     * @pdOid 74d2bc4a-8157-4371-9100-92acfea2a4d1 */
     @Override
-    public String buscar(String nombreArchivo, Double buscar) {
+    public String buscar(String nombreArchivo, Double buscar) throws LecturaDatosEx {
         BufferedReader entrada = null;
         String resultado = null;
         try {
@@ -87,9 +90,12 @@ public class AccesoDatosImpl implements AccesoDatos {
             int i=1;
             linea = entrada.readLine();
             while (linea != null){
-                if(buscar != null){
-                    resultado = " Empleado: "+ linea + " encontrada en el indice " + i;
-                    break;
+                String empDatos[] = linea.split("\\|");
+                for(String dato : empDatos){
+                    if(buscar != null && String.valueOf(buscar).equals(dato)){
+                        resultado = linea + " encontrada en el indice " + i;
+                        break;
+                    }
                 }
                 linea = entrada.readLine();
                 i++;
@@ -109,9 +115,11 @@ public class AccesoDatosImpl implements AccesoDatos {
         return resultado;
     }
     
-    /** @param nombreArchivo
+    /** *  @param nombreArchivo
+     * @throws excepciones.AccesoDatosEx
     * @pdOid c2d9fcb6-be82-4c10-a7a2-c8e0b07811be */
-    public void crear(String nombreArchivo) {
+    @Override
+    public void crear(String nombreArchivo) throws AccesoDatosEx {
         PrintWriter salida = null;
         try {
             File archivo = new File(nombreArchivo);
