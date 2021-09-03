@@ -54,8 +54,7 @@ public class ClsPrincipal {
                         System.out.println("Ingrese el mes: "
                                 + "\n<1>Enero <2>Febrero <3>Marzo");
                         int mes = Integer.parseInt(scanner.nextLine());
-                        empleados.buscarMayorVendedorPorMes(nombreArchivo, mes);
-                        empleados.buscarMenorVendedorPorMes(nombreArchivo, mes);
+                        empleados.buscarMayorYMenorVendedorPorMes(nombreArchivo, mes);
                         break;
                     case 4:
                         empleados.buscarMayorVendedorGeneral(nombreArchivo);

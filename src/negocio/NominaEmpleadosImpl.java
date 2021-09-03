@@ -55,84 +55,27 @@ public class NominaEmpleadosImpl implements NominaEmpleados{
     }
 
     @Override
-    public void buscarMayorVendedorPorMes(String nombreArchivo, int mes) {
+    public void buscarMayorYMenorVendedorPorMes(String nombreArchivo, int mes) {
         Double mayor = 0.0;
-        String resultado = null;
-        try {
-            List<MdEmpleado> empleados = datos.listar(nombreArchivo); 
-            switch (mes) {
-                case 1:
-                    for (MdEmpleado empleado : empleados) {
-                        if (empleado.getEnero() > mayor) {
-                            mayor = empleado.getEnero();
-                            resultado = empleado.getNombre();
-                        }
-                    }
-                    break;
-                case 2:
-                    for (MdEmpleado empleado : empleados) {
-                        if (empleado.getFebrero() > mayor) {
-                            mayor = empleado.getFebrero();
-                            resultado = empleado.getNombre();
-                        }
-                    }
-                    break;
-                case 3:
-                    for (MdEmpleado empleado : empleados) {
-                        if (empleado.getMarzo() > mayor) {
-                            mayor = empleado.getMarzo();
-                            resultado = empleado.getNombre();
-                        }
-                    }
-                    break;
-                }
-            if (resultado != null) {
-                System.out.println("El MAYOR vendedor del mes es " + resultado
-                                  + " con " + mayor);
-            }
-        } catch (LecturaDatosEx ex) {
-            System.out.println(errorLectura);
-            ex.printStackTrace(System.out);
-        }
-    }
-    
-    @Override
-    public void buscarMenorVendedorPorMes(String nombreArchivo, int mes) {
-        Double menor = 99999999999999.9;
-        String resultado = null;
+        Double menor = 999999999999.9;
+        String nombreMayor = null;
+        String nombreMenor = null;
         try {
             List<MdEmpleado> empleados = datos.listar(nombreArchivo);
-            switch (mes) {
-                case 1:
-                    for (MdEmpleado empleado : empleados) {
-                        if (empleado.getEnero() < menor) {
-                            menor = empleado.getEnero();
-                            resultado = empleado.getNombre();
-                        }
-                    }
-                    break;
-                case 2:
-                    for (MdEmpleado empleado : empleados) {
-                        if (empleado.getFebrero() < menor) {
-                            menor = empleado.getFebrero();
-                            resultado = empleado.getNombre();
-                        }
-                    }
-                    break;
-                case 3:
-                    for (MdEmpleado empleado : empleados) {
-                        if (empleado.getMarzo() < menor) {
-                            menor = empleado.getMarzo();
-                            resultado = empleado.getNombre();
-                        }
-                    }
-                    break;
-                default:
-                    System.out.println("Mes no valido");
+            for (MdEmpleado empleado : empleados) {
+                String[] empDatos = empleado.toString().split("\\|");
+                if (Double.valueOf(empDatos[mes]) > mayor) {
+                    mayor = Double.valueOf(empDatos[mes]);
+                    nombreMayor = empDatos[0];
+                }
+                if (Double.valueOf(empDatos[mes]) < menor) {
+                    menor = Double.valueOf(empDatos[mes]);
+                    nombreMenor = empDatos[0];
+                }
             }
-            if (resultado != null) {
-                System.out.println("El MENOR vendedor del mes es " + resultado
-                                 + " con " + menor);
+            if (nombreMayor != null && nombreMenor != null) {
+                System.out.println("Mayor vendedor: " + nombreMayor + " con " + mayor
+                               + "\nMenor vendedor: " + nombreMenor + " con " + menor);
             }
         } catch (LecturaDatosEx ex) {
             System.out.println(errorLectura);
